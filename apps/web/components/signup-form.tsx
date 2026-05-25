@@ -7,6 +7,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/ui
 import { Input } from "~/components/ui/input";
 import { trpc } from "~/trpc/client";
 import { useSignup } from "~/hooks/api/auth";
+import { useRouter } from "next/navigation";
 
 type SignupFormValues = {
   name: string;
@@ -17,7 +18,7 @@ type SignupFormValues = {
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
   const { createUserWithEmailAndPasswordAsync } = useSignup();
-
+  const router = useRouter();
   const { register, handleSubmit } = useForm<SignupFormValues>({
     defaultValues: {
       name: "",
@@ -33,6 +34,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
       fullName: values.name,
       password: values.password,
     });
+    router.replace("/dashboard");
   };
 
   return (

@@ -8,6 +8,7 @@ import { Input } from "~/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email } from "zod";
 import { useSignIn } from "hooks/api/auth";
+import { useRouter } from "next/navigation";
 
 type LoginFormValues = {
   email: string;
@@ -16,6 +17,7 @@ type LoginFormValues = {
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const { signInUserWithEmailAndPasswordAsync } = useSignIn();
+  const router = useRouter();
   const { register, handleSubmit } = useForm<LoginFormValues>({
     defaultValues: {
       email: "",
@@ -29,6 +31,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       email: values.email,
       password: values.password,
     });
+    router.replace("/dashboard");
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
