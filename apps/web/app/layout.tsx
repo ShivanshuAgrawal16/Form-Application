@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css" assert { type: "css" };
+import "./globals.css";
 import { GlobalProviders } from "~/providers/global";
 
 const geistSans = localFont({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <GlobalProviders>{children}</GlobalProviders>
       </body>
