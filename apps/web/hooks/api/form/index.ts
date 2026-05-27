@@ -29,3 +29,25 @@ export const useCreateForm = () => {
     status,
   };
 };
+
+export const useListForms = () => {
+  const {
+    data: forms,
+    error,
+    isError,
+    isFetched,
+    isFetching,
+    isLoading,
+    status,
+  } = trpc.form.listForms.useQuery();
+
+  return {
+    forms,
+    error,
+    isError,
+    isFetched,
+    isFetching,
+    isLoading,
+    status,
+  };
+};
