@@ -30,7 +30,7 @@ export const formRouter = router({
   listForms: authenticatedProcedure
     .meta({
       openapi: {
-        method: "POST",
+        method: "GET",
         path: getPath("/list"),
         tags: TAGS,
         protect: true,
@@ -42,6 +42,12 @@ export const formRouter = router({
       const userId = ctx.user.id;
       const forms = await formService.listFormsByUserId({ userId });
 
-      return forms;
+      return forms.map((form) => ({
+        id: form.id,
+        title: form.title,
+        description: form.description ?? null,
+        createdAt: form.createdAt ? form.createdAt.toISOString() : null,
+        updatedAt: form.updatedAt ? form.updatedAt.toISOString() : null,
+      }));
     }),
 });
