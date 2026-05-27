@@ -1,9 +1,10 @@
+"use client";
 import { useUser } from "hooks/api/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { api } from "~/trpc/server";
 
-export default async function Home() {
+export default function Home() {
   const { user } = useUser();
   const router = useRouter();
 
@@ -13,7 +14,7 @@ export default async function Home() {
     } else {
       router.replace("/login");
     }
-  }, [user]);
+  }, [user, router]);
 
   return (
     <main className="min-h-screen min-w-screen flex justify-center items-center">

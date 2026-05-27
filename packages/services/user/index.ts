@@ -36,7 +36,7 @@ class UserService {
     return result[0];
   }
 
-  private async getUserInfoById(id: string) {
+  public async getUserInfoById(id: string) {
     const user = await db
       .select({
         id: usersTable.id,
@@ -47,7 +47,8 @@ class UserService {
       .from(usersTable)
       .where(eq(usersTable.id, id));
 
-    if (!user || user.length === 0) throw new Error(`User with ID ${id} does not exists`);
+    if (!user || user.length === 0 || !user[0])
+      throw new Error(`User with ID ${id} does not exists`);
     return user[0];
   }
 
@@ -104,8 +105,7 @@ class UserService {
 
   public async verifyAndDecodeUserToken(token: string) {
     const { id } = await this.verifyUserToken(token);
-    const userInfo = await this.getUserInfoById(id);
-    return { ...userInfo };
+    return { id };
   }
 }
 

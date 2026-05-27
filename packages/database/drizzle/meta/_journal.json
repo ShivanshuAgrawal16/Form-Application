@@ -15,6 +15,20 @@
       "when": 1779370012938,
       "tag": "0001_wonderful_bug",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779789700903,
+      "tag": "0002_neat_warstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779791040729,
+      "tag": "0003_bizarre_sentinels",
+      "breakpoints": true
     }
   ]
 }

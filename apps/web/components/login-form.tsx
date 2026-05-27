@@ -7,8 +7,9 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "~/components/ui
 import { Input } from "~/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { email } from "zod";
-import { useSignIn } from "hooks/api/auth";
+import { useSignIn, useUser } from "hooks/api/auth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 type LoginFormValues = {
   email: string;
@@ -16,8 +17,17 @@ type LoginFormValues = {
 };
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
-  const { signInUserWithEmailAndPasswordAsync } = useSignIn();
   const router = useRouter();
+  const user = useUser();
+
+  useEffect(() => {
+    if (user && user.user?.id) {
+      router.replace("/dashboard");
+    }
+  }, [user, router]);
+
+  const { signInUserWithEmailAndPasswordAsync } = useSignIn();
+
   const { register, handleSubmit } = useForm<LoginFormValues>({
     defaultValues: {
       email: "",
@@ -41,11 +51,17 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input id="email" type="email" placeholder="m@example.com" required />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                  {...register("email")}
+                />
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -57,7 +73,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" required {...register("password")} />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
