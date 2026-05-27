@@ -3,8 +3,8 @@ import { formsTable } from "@repo/database/models/form";
 import {
   createFormInput,
   CreateFormInputType,
-  getFormByIdInput,
-  GetFormByIdInputType,
+  listFormsByUserIdInput,
+  ListFormsByUserIdInputType,
 } from "./model";
 
 class FormService {
@@ -23,11 +23,21 @@ class FormService {
     return { id: insertResult[0].id };
   }
 
-  public async getFormById(payload: GetFormByIdInputType) {
-    const { id } = await getFormByIdInput.parseAsync(payload);
-    const result = await db.select().from(formsTable).where(eq(formsTable.id, id));
-    if (!result || result.length === 0) throw new Error(`Form with ID ${id} does not exists`);
-    return result[0];
+  public async listFormsByUserId(payload: ListFormsByUserIdInputType) {
+    const { userId } = await listFormsByUserIdInput.parseAsync(payload);
+
+    const forms = await db
+      .select({
+        id: formsTable.id,
+        title: formsTable.title,
+        description: formsTable.description,
+        createdAt: formsTable.createdAt,
+        updatedAt: formsTable.updatedAt,
+      })
+      .from(formsTable)
+      .where(eq(formsTable.createdBy, userId));
+
+    return forms;
   }
 }
 
